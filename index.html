@@ -21,7 +21,7 @@ body {
     background-color: #000;
     height: 100vh;
     width: 100vw;
-    overflow: hidden;
+    overflow: auto;
 }
 
 html {
@@ -35,6 +35,7 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: auto;
 }
 
 #middle {
@@ -50,11 +51,11 @@ html {
     position: relative;
     width: 100%;
     height: 100%;
-    /* max-width: 980px;
-    max-height: 545px; */
+    max-width: 980px;
+    max-height: 545px;
     margin: 0 auto;
     top: 0;
-    /* aspect-ratio: 980 / 545; */
+    aspect-ratio: 980 / 545; /* Giữ tỷ lệ khung hình gốc */
     background-size: cover;
     background-position: center;
 }
@@ -69,30 +70,37 @@ html {
 /* Media query cho thiết bị di động */
 @media (max-width: 768px) {
     #container {
-        /* Ưu tiên hiển thị toàn bộ chiều cao để không bị cắt phần dưới */
-        height: 100vh;
-        width: calc(100vh * 980 / 545); /* Tính chiều rộng dựa trên tỷ lệ */
-        max-width: 100vw;
-        max-height: calc(100vw * 545 / 980); /* Giới hạn chiều cao */
+        /* Mặc định hiển thị ở chế độ nằm ngang */
+        width: 100vh; /* Chiều rộng bằng chiều cao của viewport (mô phỏng landscape) */
+        height: calc(100vh * 545 / 980); /* Tính chiều cao dựa trên tỷ lệ */
+        max-height: 100vw; /* Giới hạn chiều cao bằng chiều rộng của viewport */
+        max-width: calc(100vw * 980 / 545); /* Giới hạn chiều rộng */
     }
 
     /* Khi điện thoại ở chế độ nằm ngang (landscape) */
     @media (orientation: landscape) {
         #container {
-            height: 100vh;
-            width: calc(100vh * 980 / 545);
-            max-width: 100vw;
-            /* max-height: calc(100vw * 545 / 980); */
+            width: 100vw;
+            height: calc(100vw * 545 / 980);
+            max-height: 100vh;
+            max-width: calc(100vh * 980 / 545);
+            transform: none; /* Không cần xoay */
         }
     }
 
     /* Khi điện thoại ở chế độ dọc (portrait) */
     @media (orientation: portrait) {
+        #outer {
+            /* Xoay toàn bộ container để mô phỏng chế độ nằm ngang */
+            transform: rotate(90deg);
+            transform-origin: center;
+        }
+
         #container {
-            height: 100vh;
-            width: calc(100vh * 980 / 545);
-            max-width: 100vw;
-            /* max-height: calc(100vw * 545 / 980); */
+            width: 100vh; /* Chiều rộng bằng chiều cao của viewport */
+            height: calc(100vh * 545 / 980); /* Tính chiều cao dựa trên tỷ lệ */
+            max-height: 100vw; /* Giới hạn chiều cao bằng chiều rộng của viewport */
+            max-width: calc(100vw * 980 / 545); /* Giới hạn chiều rộng */
         }
 
         /* Hiển thị thông báo khuyến khích xoay ngang */
@@ -111,6 +119,15 @@ html {
             text-align: center;
             font-size: 18px;
             z-index: 1000;
+            transform: rotate(-90deg); /* Xoay ngược lại để thông báo hiển thị đúng hướng */
+        }
+
+        /* Điều chỉnh vị trí FPS khi xoay */
+        #fps {
+            transform: rotate(-90deg);
+            transform-origin: top left;
+            top: 0;
+            left: calc(100vw - 50px); /* Điều chỉnh vị trí FPS */
         }
     }
 }
@@ -137,6 +154,7 @@ html {
 <script type="text/javascript" src="src/views/Bullet.js"></script>
 <script type="text/javascript" src="src/views/Num.js"></script>
 <script type="text/javascript" src="src/views/Player.js"></script>
+
 </head>
 
 <body>
