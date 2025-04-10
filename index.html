@@ -52,10 +52,8 @@ html {
     width: 100%;
     height: 100%;
     max-width: 980px;
-    max-height: 545px;
     margin: 0 auto;
     top: 0;
-    aspect-ratio: 980 / 545; /* Giữ tỷ lệ khung hình gốc */
     background-size: cover;
     background-position: center;
 }
@@ -69,13 +67,11 @@ html {
 
 /* Media query cho thiết bị di động */
 @media (max-width: 768px) {
-    #container {
-        /* Mặc định hiển thị ở chế độ nằm ngang */
-        width: 100vh; /* Chiều rộng bằng chiều cao của viewport (mô phỏng landscape) */
-        height: calc(100vh * 545 / 980); /* Tính chiều cao dựa trên tỷ lệ */
-        max-height: 100vw; /* Giới hạn chiều cao bằng chiều rộng của viewport */
-        max-width: calc(100vw * 980 / 545); /* Giới hạn chiều rộng */
-    }
+
+    /* #outer {
+            transform: rotate(90deg);
+            transform-origin: center;
+        } */
 
     /* Khi điện thoại ở chế độ nằm ngang (landscape) */
     @media (orientation: landscape) {
@@ -90,36 +86,16 @@ html {
 
     /* Khi điện thoại ở chế độ dọc (portrait) */
     @media (orientation: portrait) {
-        #outer {
-            /* Xoay toàn bộ container để mô phỏng chế độ nằm ngang */
+        /* #outer {
             transform: rotate(90deg);
             transform-origin: center;
-        }
+        } */
 
         #container {
             width: 100vh; /* Chiều rộng bằng chiều cao của viewport */
             height: calc(100vh * 545 / 980); /* Tính chiều cao dựa trên tỷ lệ */
             max-height: 100vw; /* Giới hạn chiều cao bằng chiều rộng của viewport */
             max-width: calc(100vw * 980 / 545); /* Giới hạn chiều rộng */
-        }
-
-        /* Hiển thị thông báo khuyến khích xoay ngang */
-        body::before {
-            content: "Please rotate your device to landscape mode for the best experience.";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            font-size: 18px;
-            z-index: 1000;
-            transform: rotate(-90deg); /* Xoay ngược lại để thông báo hiển thị đúng hướng */
         }
 
         /* Điều chỉnh vị trí FPS khi xoay */
@@ -141,7 +117,25 @@ html {
 </style>
 
 <title>Câu cá</title>
-
+<script>
+    (function() {
+        // Hàm kiểm tra xem có phải thiết bị di động không
+        function isMobileDevice() {
+            // Kiểm tra dựa trên kích thước màn hình (dưới 768px được coi là di động)
+            if (window.innerWidth <= 768) {
+                return true;
+            }
+            // Kiểm tra dựa trên userAgent
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+        }
+    
+        // Nếu là thiết bị di động, hiển thị thông báo
+        if (isMobileDevice()) {
+            alert("Hãy xoay ngang điện thoại để chơi");
+        }
+    })();
+    </script>
 <script type="text/javascript" src="js/quark.base-1.0.0.alpha.min.js"></script>
 <!--<script type="text/javascript" src="fishjoy.game.js"></script>-->
 <script type="text/javascript" src="src/R.js"></script>
